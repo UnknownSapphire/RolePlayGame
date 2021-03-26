@@ -10,12 +10,15 @@ namespace Character {
     }
     
     public class Wizard: Character {
-        public Wizard(string name, Gender gender, Race race, int age): base(name, gender, race, age) {}
+        public const int MaxMana = 100;
+        private int _mana = MaxMana;
 
         public int Mana {
             get => _mana;
             private set => _mana = Math.Max(0, Math.Min(value, MaxMana));
         }
+        
+        public Wizard(string name, Gender gender, Race race, int age): base(name, gender, race, age) {}
 
         public void SpellCast(PowerSpell spell, Character other, int power) {
             switch (spell) {
@@ -42,10 +45,7 @@ namespace Character {
         }
 
         public override string ToString() {
-            return base.ToString() + ", Mana: " + Mana;
+            return base.ToString() + $", Mana: {Mana}";
         }
-
-        public const int MaxMana = 100;
-        private int _mana = MaxMana;
     }
 }

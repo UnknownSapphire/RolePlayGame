@@ -24,23 +24,30 @@ namespace Character {
     }
     
     public class Character: IComparable, ICloneable {
-        public Character(string name, Gender gender, Race race, int age) {
-            _id = _nextId++;
-            Name = name;
-            _gender = gender;
-            _race = race;
-            Age = age;
-        }
+        public const int MaxHealth = 100;
+        public const int MaxExp = int.MaxValue;
+        protected static int _nextId;
+        protected int _id;
         
+        private string _name;
+        private State _state = State.Normal;
+        private bool _canTalk = true;
+        private bool _canMove = true;
+        private Race _race;
+        private Gender _gender;
+        private int _age;
+        private int _health = MaxHealth;
+        private int _exp;
+
         public int ID => _id;
 
         public string Name {
             get => _name;
             protected set {
                 string name = value.Trim();
-                if (name == "")
+                if (string.IsNullOrEmpty(name)) {
                     throw new ArgumentException("The name of the character must not be empty");
-                
+                }
                 _name = name;
             }
         }
@@ -66,9 +73,9 @@ namespace Character {
         public int Age {
             get => _age;
             protected set {
-                if (value <= 0 || value > 200)
+                if (value <= 0 || value > 200) {
                     throw new ArgumentException("Invalid value for age of the character");
-
+                }
                 _age = value;
             }
         }
@@ -82,23 +89,33 @@ namespace Character {
                     CanTalk = false;
                     CanMove = false;
                 }
-                else if (State == State.Normal && Health * 100 / MaxHealth < 10)
+                else if (State == State.Normal && Health * 100 / MaxHealth < 10) {
                     State = State.Weakened;
-                else if (State == State.Weakened && Health * 100 / MaxHealth >= 10)
+                }
+                else if (State == State.Weakened && Health * 100 / MaxHealth >= 10) {
                     State = State.Normal;
+                }
             }
         }
 
         public int Exp {
             get => _exp;
-            protected set => _exp = value;
+            protected set => _exp = Math.Min(value, MaxExp);
+        }
+        
+        public Character(string name, Gender gender, Race race, int age) {
+            _id = _nextId++;
+            Name = name;
+            _gender = gender;
+            _race = race;
+            Age = age;
         }
 
         public int CompareTo(object obj) {
             Character chr = (Character) obj;
-            if (chr == null)
+            if (chr == null) {
                 throw new Exception("It's impossible to compare those objects");
-
+            }
             return Exp.CompareTo(chr.Exp);
         }
 
@@ -109,23 +126,8 @@ namespace Character {
         }
 
         public override string ToString() {
-            return "ID: " + ID + ", Name: " + Name + ", Health: " + Health + ", Exp: " + Exp + ", Gender: " + Gender +
-                   ", Race: " + Race + ", Age: " + Age + ", State: " + State + ", Can Talk: " + CanTalk +
-                   ", Can move: " + CanMove;
+            return $"ID: {ID}, Name: {Name}, Health: {Health}, Exp: {Exp}, Gender: {Gender}, Race: {Race}," +
+                   $" Age: {Age}, State: {State}, Can talk: {CanTalk}, Can move: {CanMove}";
         }
-
-        protected int _id;
-        protected static int _nextId;
-        public const int MaxHealth = 100;
-        
-        private string _name;
-        private State _state = State.Normal;
-        private bool _canTalk = true;
-        private bool _canMove = true;
-        private Race _race;
-        private Gender _gender;
-        private int _age;
-        private int _health = MaxHealth;
-        private int _exp;
     }
 }
