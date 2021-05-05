@@ -1,24 +1,22 @@
 ﻿using System;
 
 namespace Character {
-    public enum Spell {
-        
-    }
 
     public enum PowerSpell {
         Heal
     }
     
     public class Wizard: Character {
-        public const int MaxMana = 100;
+        public const int MaxMana = 1000;
         private int _mana = MaxMana;
 
         public int Mana {
             get => _mana;
-            private set => _mana = Math.Max(0, Math.Min(value, MaxMana));
+            internal set => _mana = Math.Max(0, Math.Min(value, MaxMana));
         }
         
-        public Wizard(string name, Gender gender, Race race, int age): base(name, gender, race, age) {}
+        public Wizard(string name, Gender gender, Race race, int age, int maxHealth):
+            base(name, gender, race, age, maxHealth) {}
 
         public void SpellCast(PowerSpell spell, Character other, int power) {
             switch (spell) {
@@ -33,9 +31,9 @@ namespace Character {
         }
 
         public void SpellCast(Spell spell, Character other) {
-            if ((int) spell <= Mana) {
-                Mana -= (int) spell;
-            }
+            //if ((int) spell <= Mana) {
+                //Mana -= (int) spell;
+            //}
         }
 
         public override object Clone() {

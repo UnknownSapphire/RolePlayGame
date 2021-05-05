@@ -24,7 +24,6 @@ namespace Character {
     }
     
     public class Character: IComparable, ICloneable {
-        public const int MaxHealth = 100;
         public const int MaxExp = int.MaxValue;
         protected static int _nextId;
         protected int _id;
@@ -36,25 +35,26 @@ namespace Character {
         private Race _race;
         private Gender _gender;
         private int _age;
-        private int _health = MaxHealth;
+        private int _health;
         private int _exp;
 
         public int ID => _id;
+        
+        public int MaxHealth { get; }
 
         public string Name {
             get => _name;
             protected set {
-                string name = value.Trim();
-                if (string.IsNullOrEmpty(name)) {
+                if (string.IsNullOrWhiteSpace(value)) {
                     throw new ArgumentException("The name of the character must not be empty");
                 }
-                _name = name;
+                _name = value.Trim();
             }
         }
 
         public State State {
             get => _state;
-            protected set => _state = value;
+            protected internal set => _state = value;
         }
 
         public bool CanTalk {
@@ -103,18 +103,19 @@ namespace Character {
             protected set => _exp = Math.Min(value, MaxExp);
         }
         
-        public Character(string name, Gender gender, Race race, int age) {
+        public Character(string name, Gender gender, Race race, int age, int maxHealth) {
             _id = _nextId++;
             Name = name;
+            MaxHealth = maxHealth;
+            _health = MaxHealth;
             _gender = gender;
             _race = race;
             Age = age;
         }
 
         public int CompareTo(object obj) {
-            Character chr = (Character) obj;
-            if (chr == null) {
-                throw new Exception("It's impossible to compare those objects");
+            if (!(obj is Character chr)) {
+                throw new Exception("It's impossible to compare these objects");
             }
             return Exp.CompareTo(chr.Exp);
         }
