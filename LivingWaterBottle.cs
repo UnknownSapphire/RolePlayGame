@@ -12,13 +12,10 @@
             _bottleSize = bottleSize;
         }
 
-        public override void SpellCast(object person1, object person2, int power) {
-            if (!ReferenceEquals(person1, person2) || !(person1 is Wizard w) 
-                || !(person2 is Wizard) && !(person2 is Character)) {
-                return;
+        public override void SpellCast(object person1, object person2, int power = 0) {
+            if (ReferenceEquals(person1, person2) && person1 is Character chr) {
+                chr.Health += (int) _bottleSize;
             }
-            w.Health += (int) _bottleSize;
-            // delete from inventory
         }
 
         public override void SpellCast(object person, int power) {}

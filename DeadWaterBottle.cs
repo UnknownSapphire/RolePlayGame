@@ -6,11 +6,9 @@
         }
 
         public override void SpellCast(object person1, object person2, int power = 0) {
-            if (!ReferenceEquals(person1, person2) || !(person1 is Wizard w) || !(person2 is Wizard)
-                && !(person2 is Character)) return;
-            Character chr = (Character) person2;
-            w.Mana += (int) _bottleSize;
-            // delete from inventory
+            if (ReferenceEquals(person1, person2) && person1 is Wizard w) {
+                w.Mana += (int) _bottleSize;
+            }
         }
 
         public override void SpellCast(object person, int power) {}

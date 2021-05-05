@@ -1,14 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Character {
 
-    public enum PowerSpell {
-        Heal
-    }
-    
     public class Wizard: Character {
         public const int MaxMana = 1000;
         private int _mana = MaxMana;
+        private HashSet<Spell> _spells;
 
         public int Mana {
             get => _mana;
@@ -16,26 +14,28 @@ namespace Character {
         }
         
         public Wizard(string name, Gender gender, Race race, int age, int maxHealth):
-            base(name, gender, race, age, maxHealth) {}
+            base(name, gender, race, age, maxHealth) {
+                _spells = new HashSet<Spell>();
+        }
 
-        public void SpellCast(PowerSpell spell, Character other, int power) {
-            switch (spell) {
-                case PowerSpell.Heal:
-                    if (other.State != State.Dead) {
-                        int hp = Math.Min(power, Math.Min(Mana / 2, MaxHealth - other.Health));
-                        other.Health += hp;
-                        Mana -= hp * 2;
-                    }
-                    break;
+        public bool KnowSpell(Spell spell) {
+            return _spells.Contains(spell);
+        }
+
+        public void LearnSpell(Spell spell) {
+            _spells.Add(spell);
+        }
+
+        public void ForgetSpell(Spell spell) {
+            _spells.Remove(spell);
+        }
+
+        public void UseSpell(Character target, Spell spell, int power) {
+            if (KnowSpell(spell)) {
+                spell.SpellCast(this, target, power);
             }
         }
-
-        public void SpellCast(Spell spell, Character other) {
-            //if ((int) spell <= Mana) {
-                //Mana -= (int) spell;
-            //}
-        }
-
+        
         public override object Clone() {
             Wizard wizard = this;
             wizard._id = _nextId++;

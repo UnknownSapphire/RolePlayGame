@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Character {
     public enum State {
@@ -37,6 +39,7 @@ namespace Character {
         private int _age;
         private int _health;
         private int _exp;
+        private Dictionary<Artifact, int> _inventory;
 
         public int ID => _id;
         
@@ -111,6 +114,39 @@ namespace Character {
             _gender = gender;
             _race = race;
             Age = age;
+            _inventory = new Dictionary<Artifact, int>();
+        }
+
+        public void PickArtifact(Artifact artifact, int amount = 1) {
+            if (HaveArtifact(artifact, amount)) {
+                _inventory.Add(artifact, amount);
+            } else {
+                _inventory[artifact] += amount;
+            }
+        }
+
+        public void DropArtifact(Artifact artifact, int amount = 1) {
+             if (HaveArtifact(artifact, amount)) {
+                 _inventory[artifact] -= amount;
+             }
+        }
+
+        public void GiveArtifact(Character chr, Artifact artifact, int amount = 1) {
+            if (HaveArtifact(artifact, amount)) {
+                _inventory[artifact] -= amount;
+                chr.PickArtifact(artifact, amount);
+            }
+        }
+
+        public void UseArtifact(Artifact artifact, Character target, int power) {
+            if (HaveArtifact(artifact)) {
+                --_inventory[artifact];
+                artifact.SpellCast(this, target, power);
+            }
+        }
+
+        public bool HaveArtifact(Artifact artifact, int amount = 1) {
+            return _inventory.ContainsKey(artifact) && _inventory[artifact] - amount >= 0;
         }
 
         public int CompareTo(object obj) {
