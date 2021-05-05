@@ -41,13 +41,20 @@
         <Compile Include="AddHealth.cs" />
         <Compile Include="Antidote.cs" />
         <Compile Include="Armor.cs" />
+        <Compile Include="Artifact.cs" />
         <Compile Include="Character.cs" />
         <Compile Include="Cure.cs" />
+        <Compile Include="DeadWaterBottle.cs" />
+        <Compile Include="FrogLegsDecoct.cs" />
+        <Compile Include="LightningWand.cs" />
+        <Compile Include="LivingWaterBottle.cs" />
         <Compile Include="Magic.cs" />
+        <Compile Include="PoisonousSaliva.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Revive.cs" />
         <Compile Include="Spell.cs" />
+        <Compile Include="VasiliskEye.cs" />
         <Compile Include="WitherAway.cs" />
         <Compile Include="Wizard.cs" />
     </ItemGroup>

@@ -10,9 +10,11 @@
             _haveMotorComponent = haveMotorComponent;
         }
 
-        public abstract void SpellCast(ref Wizard w, ref Character chr, int power = 0);
+        public abstract void SpellCast(object person1, object person2, int power = 0);
 
-        protected bool CanSpell(ref Wizard w, int minMana, bool haveVerbalComponent, bool haveMotorComponent) {
+        public abstract void SpellCast(object person, int power);
+
+        protected bool CanSpell(Wizard w, int minMana, bool haveVerbalComponent, bool haveMotorComponent) {
             return w.Mana >= minMana && w.State != State.Dead &&
                    (w.CanMove || !haveMotorComponent) && (w.CanTalk || !haveVerbalComponent);
         }
