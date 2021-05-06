@@ -23,11 +23,10 @@ namespace Character {
         }
 
         public void LearnSpell(Spell spell) {
-            _spells.Add(spell);
-            //if (Exp >= 1500 && !KnowSpell(spell)) {
-              //  _spells.Add(spell);
-               // Exp -= 1500;
-           // }
+            if (Exp >= 1500 && !KnowSpell(spell)) {
+               _spells.Add(spell);
+               Exp -= 1500;
+            }
         }
 
         public void ForgetSpell(Spell spell) {
