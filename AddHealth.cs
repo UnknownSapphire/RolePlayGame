@@ -2,7 +2,7 @@
 
 namespace Character {
     public class AddHealth: Spell {
-        AddHealth(bool haveVerbalComponent, bool haveMotorComponent):
+        public AddHealth(bool haveVerbalComponent, bool haveMotorComponent):
             base(2, haveVerbalComponent, haveMotorComponent) {}
 
         public override void SpellCast(object person1, object person2, int power = 0) {

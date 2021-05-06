@@ -23,7 +23,10 @@ namespace Character {
         }
 
         public void LearnSpell(Spell spell) {
-            _spells.Add(spell);
+            if (Exp >= 1500 && !KnowSpell(spell)) {
+               _spells.Add(spell);
+               Exp -= 1500;
+            }
         }
 
         public void ForgetSpell(Spell spell) {
@@ -32,7 +35,11 @@ namespace Character {
 
         public void UseSpell(Character target, Spell spell, int power) {
             if (KnowSpell(spell)) {
+                int prevMana = Mana;
                 spell.SpellCast(this, target, power);
+                if (!ReferenceEquals(this, target) && prevMana != Mana) {
+                    Exp += 100;
+                }
             }
         }
         
