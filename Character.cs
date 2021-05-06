@@ -82,20 +82,19 @@ namespace Character {
                 _age = value;
             }
         }
-        public  int Health {
+        public int Health {
             get => _health;
             protected internal set {
                 _health = Math.Max(0, Math.Min(value, MaxHealth));
-
-                if (Health == 0) {
+                if (_health == 0) {
                     State = State.Dead;
                     CanTalk = false;
                     CanMove = false;
                 }
-                else if (State == State.Normal && Health * 100 / MaxHealth < 10) {
+                else if (State == State.Normal && _health * 100 / MaxHealth < 10) {
                     State = State.Weakened;
                 }
-                else if (State == State.Weakened && Health * 100 / MaxHealth >= 10) {
+                else if (State == State.Weakened && _health * 100 / MaxHealth >= 10) {
                     State = State.Normal;
                 }
             }
@@ -118,8 +117,8 @@ namespace Character {
         }
 
         public void PickArtifact(Artifact artifact, int amount = 1) {
-            if (HaveArtifact(artifact, amount)) {
-                _inventory.Add(artifact, amount);
+            if (!HaveArtifact(artifact)) {
+                _inventory.Add(artifact, amount); 
             } else {
                 _inventory[artifact] += amount;
             }
@@ -134,14 +133,16 @@ namespace Character {
         public void GiveArtifact(Character chr, Artifact artifact, int amount = 1) {
             if (HaveArtifact(artifact, amount)) {
                 _inventory[artifact] -= amount;
-                chr.PickArtifact(artifact, amount);
+                chr.PickArtifact(artifact, amount);  
             }
         }
 
         public void UseArtifact(Artifact artifact, Character target, int power) {
             if (HaveArtifact(artifact)) {
-                --_inventory[artifact];
                 artifact.SpellCast(this, target, power);
+                if (!artifact.IsRenewable) {
+                    --_inventory[artifact];
+                }
             }
         }
 

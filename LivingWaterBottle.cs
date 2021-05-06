@@ -1,10 +1,4 @@
 ﻿namespace Character {
-    public enum BottleSize {
-        Small = 10,
-        Medium = 25,
-        Big = 50
-    }
-    
     public class LivingWaterBottle: Artifact {
         private BottleSize _bottleSize;
 
